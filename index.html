@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TeXstudio Client</title>
+<meta name="description" content="Download TeXstudio client, watch tutorials (Russian / English) and support the project.">
+<style>
+  /* =========================================================
+     EDIT ONLY THE CONFIG IN THE <script> AT THE BOTTOM.
+     ========================================================= */
+  :root {
+    --bg: #f6f7fb; --surface: #ffffff; --text: #151823; --muted: #5d6475;
+    --border: #e2e5ee; --accent: #2f6fed; --accent-text: #ffffff;
+    --paypal: #ffc439; --paypal-text: #111111; --chip: #eef1f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1117; --surface: #171a23; --text: #e9ecf3; --muted: #9aa2b4;
+      --border: #272b38; --accent: #5b8cff; --accent-text: #0b0d12; --chip: #20242f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg);
+    border-bottom: 1px solid var(--border); }
+  .bar { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 12px; }
+  .logo { font-weight: 700; font-size: 18px; text-decoration: none; color: var(--text); }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 18px; align-items: center; }
+  nav a.link { color: var(--muted); text-decoration: none; font-size: 15px; }
+  nav a.link:hover { color: var(--text); }
+  .lang { border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: 600; }
+
+  .hero { padding: 72px 0 56px; text-align: center; }
+  .hero h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.1; margin: 0 0 16px; }
+  .hero p { color: var(--muted); font-size: 18px; max-width: 620px; margin: 0 auto 32px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px;
+    border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 17px; border: 0; }
+  .btn-primary { background: var(--accent); color: var(--accent-text); }
+  .btn-paypal { background: var(--paypal); color: var(--paypal-text); }
+  .btn:hover { filter: brightness(1.06); }
+  .meta { margin-top: 14px; color: var(--muted); font-size: 14px; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 28px; margin: 0 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .chip { border: 1px solid var(--border); background: var(--chip); color: var(--text);
+    border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 14px; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .sep { width: 1px; background: var(--border); margin: 0 6px; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .frame { position: relative; background: #000; }
+  .frame.yt { aspect-ratio: 16 / 9; }
+  .frame.tt { aspect-ratio: 9 / 16; max-height: 560px; margin: 0 auto; }
+  .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .card .info { padding: 12px 14px; }
+  .card .title { font-weight: 600; margin: 0 0 6px; }
+  .tags { display: flex; gap: 6px; }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+  .empty { color: var(--muted); }
+
+  #guideView { display: none; border-top: 0; padding-top: 32px; }
+  body.guide-mode #guideView { display: block; }
+  body.guide-mode .home { display: none; }
+  .back { display: inline-block; margin-bottom: 16px; text-decoration: none; }
+  .guide-grid { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+  .guide-grid .card.is-yt { flex: 2 1 420px; }
+  .guide-grid .card.is-tt { flex: 1 1 240px; max-width: 340px; }
+  @media (max-width: 700px) { .guide-grid .card.is-tt { max-width: none; } }
+  #guideView h3 { margin: 32px 0 12px; font-size: 18px; }
+  .guide-nav { display: flex; flex-wrap: wrap; gap: 8px; }
+  .guide-nav a { text-decoration: none; }
+
+  .support { text-align: center; }
+  .support p { max-width: 560px; margin: 0 auto 24px; color: var(--muted); }
+  footer { padding: 28px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; text-align: center; }
+
+  @media (max-width: 600px) {
+    nav a.link { display: none; }
+    .hero { padding: 48px 0 40px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#">TeX<span>studio</span></a>
+    <nav>
+      <a class="link" href="#download" data-i18n="navDownload"></a>
+      <a class="link" href="#tutorials" data-i18n="navTutorials"></a>
+      <a class="link" href="#support" data-i18n="navSupport"></a>
+      <button class="lang" id="langBtn" type="button"></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="guideView">
+    <div class="wrap">
+      <a class="back" href="#" data-i18n="back"></a>
+      <h2 id="guideTitle"></h2>
+      <div class="guide-grid" id="guideGrid"></div>
+      <h3 data-i18n="otherGuides"></h3>
+      <div class="guide-nav" id="guideNav"></div>
+    </div>
+  </section>
+
+  <div class="wrap hero home" id="download">
+    <h1 data-i18n="heroTitle"></h1>
+    <p data-i18n="heroText"></p>
+    <a class="btn btn-primary" id="downloadBtn" href="#">⬇ <span data-i18n="downloadBtn"></span></a>
+    <div class="meta" id="versionMeta"></div>
+  </div>
+
+  <section id="tutorials" class="home">
+    <div class="wrap">
+      <h2 data-i18n="tutTitle"></h2>
+      <p class="sub" data-i18n="tutText"></p>
+      <div class="filters" id="filters"></div>
+      <div class="grid" id="videos"></div>
+    </div>
+  </section>
+
+  <section id="support" class="support home">
+    <div class="wrap">
+      <h2 data-i18n="supportTitle"></h2>
+      <p data-i18n="supportText"></p>
+      <a class="btn btn-paypal" id="paypalBtn" href="#" target="_blank" rel="noopener" data-i18n="paypalBtn"></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> TeXstudio Client</div>
+</footer>
+
+<script>
+/* ================== CONFIG — EDIT HERE ================== */
+const CONFIG = {
+  version: "1.0.0",
+  // Link to your installer, e.g. a GitHub Release asset:
+  downloadUrl: "https://github.com/texnonik/texstudio/releases/latest/download/TexStudio-Setup.exe",
+  paypalUrl: "https://www.paypal.me/texnonik",
+
+  // platform: "youtube" or "tiktok"; lang: "ru" or "en"
+  // YouTube id: the part after v=  (youtube.com/watch?v=THIS_PART)
+  // TikTok id:  the number at the end (tiktok.com/@user/video/THIS_NUMBER)
+  videos: [
+    { platform: "youtube", lang: "ru", id: "YOUTUBE_VIDEO_ID", title: "Установка и первый запуск" },
+    { platform: "youtube", lang: "en", id: "YOUTUBE_VIDEO_ID", title: "Installation and first run" },
+    { platform: "tiktok",  lang: "ru", id: "TIKTOK_VIDEO_ID",  title: "Быстрый совет" },
+    { platform: "tiktok",  lang: "en", id: "TIKTOK_VIDEO_ID",  title: "Quick tip" }
+  ],
+
+  // Button review pages. Link: https://YOUR_SITE/#button1  (the key is the link name)
+  // Each page has a list of videos — any mix, any count:
+  //   { youtube: "ID or full link", start: "1:25" }   start = timestamp ("1:25", "1:02:10" or seconds)
+  //   { tiktok:  "ID or full link", start: "0:15" }   start is optional
+  // A YouTube link with ?t=85 also works — the timestamp is taken from it.
+  guides: {
+    button1: {   // YouTube + TikTok
+      ru: { title: "Обзор кнопки 1", videos: [
+        { youtube: "YOUTUBE_VIDEO_ID", start: "0:00" },
+        { tiktok: "https://www.tiktok.com/@jwaep.1/video/7708485141605207309?is_from_webapp=1&sender_device=pc", start: "0:15" } ] },
+      en: { title: "Button 1 review", videos: [
+        { youtube: "YOUTUBE_VIDEO_ID", start: "0:00" },
+        { tiktok: "https://www.tiktok.com/@jwaep.1/video/7708485141605207309?is_from_webapp=1&sender_device=pc", start: "0:15" } ] }
+    },
+    button2: {   // only YouTube
+      ru: { title: "Обзор кнопки 2", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "1:30" } ] },
+      en: { title: "Button 2 review", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "1:30" } ] }
+    },
+    button3: {   // only YouTube
+      ru: { title: "Обзор кнопки 3", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "3:00" } ] },
+      en: { title: "Button 3 review", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "3:00" } ] }
+    },
+    button4: {   // YouTube + TikTok
+      ru: { title: "Обзор кнопки 4", videos: [
+        { youtube: "YOUTUBE_VIDEO_ID", start: "4:30" },
+        { tiktok: "TIKTOK_VIDEO_ID" } ] },
+      en: { title: "Button 4 review", videos: [
+        { youtube: "YOUTUBE_VIDEO_ID", start: "4:30" },
+        { tiktok: "TIKTOK_VIDEO_ID" } ] }
+    }
+  }
+};
+/* ======================================================== */
+
+const T = {
+  en: {
+    navDownload: "Download", navTutorials: "Tutorials", navSupport: "Support",
+    heroTitle: "TeXstudio Client",
+    heroText: "Have you already created a map in just a couple of clicks?",
+    downloadBtn: "Download for Windows", version: "Version",
+    tutTitle: "Video tutorials", tutText: "Learn step by step on YouTube and TikTok.",
+    all: "All", ru: "Russian", en: "English",
+    noVideos: "No videos for this filter yet.", soon: "Video coming soon",
+    supportTitle: "Support the project",
+    supportText: "TeXstudio Client is free. If it helps you, you can support further development.",
+    paypalBtn: "Donate with PayPal",
+    back: "← Back to home", otherGuides: "Other button reviews"
+  },
+  ru: {
+    navDownload: "Скачать", navTutorials: "Уроки", navSupport: "Поддержать",
+    heroTitle: "TeXstudio Client",
+    heroText: "А ты уже создал карту в пару кликов?",
+    downloadBtn: "Скачать для Windows", version: "Версия",
+    tutTitle: "Видеоуроки", tutText: "Учитесь шаг за шагом на YouTube и TikTok.",
+    all: "Все", ru: "Русский", en: "English",
+    noVideos: "Пока нет видео для этого фильтра.", soon: "Видео скоро появится",
+    supportTitle: "Поддержать проект",
+    supportText: "TeXstudio Client бесплатный. Если он вам помогает, вы можете поддержать дальнейшую разработку.",
+    paypalBtn: "Поддержать через PayPal",
+    back: "← На главную", otherGuides: "Другие обзоры кнопок"
+  }
+};
+
+function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+let lang = load("lang") || ((navigator.language || "en").toLowerCase().startsWith("ru") ? "ru" : "en");
+let fPlat = "all";
+
+const isPlaceholder = id => !id || /VIDEO_ID/.test(id);
+
+function renderVideos() {
+  const t = T[lang], box = document.getElementById("videos");
+  const list = CONFIG.videos.filter(v =>
+    v.lang === lang && (fPlat === "all" || v.platform === fPlat));
+  if (!list.length) { box.innerHTML = `<p class="empty">${t.noVideos}</p>`; return; }
+  box.innerHTML = "";
+  list.forEach(v => box.appendChild(makeCard(v.platform, v.id, 0, v.title, v.lang)));
+}
+
+function toSeconds(s) {
+  if (typeof s === "number") return s;
+  return String(s || "0").split(":").reduce((a, p) => a * 60 + (parseInt(p, 10) || 0), 0);
+}
+
+// TikTok has no start-time URL, so we jump with its player API (postMessage "seekTo")
+// as soon as the player reports the video is loaded.
+const tiktokSeeks = new Map();
+window.addEventListener("message", e => {
+  if (!/^https:\/\/([\w-]+\.)*tiktok\.com$/.test(e.origin)) return;
+  let d = e.data;
+  if (typeof d === "string") { try { d = JSON.parse(d); } catch (err) { return; } }
+  if (!d || !d.type) return;
+  for (const [f, s] of tiktokSeeks) {
+    if (f.contentWindow !== e.source) continue;
+    if (!f.isConnected) { tiktokSeeks.delete(f); return; }
+    // Seek only once the video is loaded (duration known) — seeking earlier breaks playback.
+    const loaded = d.type === "onCurrentTime" && d.value && d.value.duration > 0;
+    if (loaded && !s.seeked) {
+      f.contentWindow.postMessage({ type: "seekTo", value: s.sec, "x-tiktok-player": true }, "*");
+      s.seeked = 1;
+    }
+  }
+});
+
+function makeCard(platform, id, start, titleText, vLang) {
+  const t = T[lang], yt = platform === "youtube";
+  const card = document.createElement("div");
+  card.className = "card " + (yt ? "is-yt" : "is-tt");
+  const frame = document.createElement("div");
+  frame.className = "frame " + (yt ? "yt" : "tt");
+  if (isPlaceholder(id)) {
+    frame.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;color:#aaa">${t.soon}</div>`;
+  } else {
+    const f = document.createElement("iframe");
+    f.loading = "lazy";
+    f.allowFullscreen = true;
+    f.allow = "encrypted-media; picture-in-picture";
+    const sec = toSeconds(start);
+    f.src = yt ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}${sec ? "?start=" + sec : ""}`
+               : `https://www.tiktok.com/player/v1/${encodeURIComponent(id)}?rel=0`;
+    frame.appendChild(f);
+    if (!yt && sec) tiktokSeeks.set(f, { sec, seeked: 0 });
+  }
+  const info = document.createElement("div");
+  info.className = "info";
+  const title = document.createElement("p");
+  title.className = "title";
+  title.textContent = titleText;
+  info.appendChild(title);
+  info.insertAdjacentHTML("beforeend",
+    `<div class="tags"><span class="tag">${yt ? "YouTube" : "TikTok"}</span><span class="tag">${vLang.toUpperCase()}</span></div>`);
+  card.append(frame, info);
+  return card;
+}
+
+// Accepts a video ID or a full link (youtube.com/watch?v=..., youtu.be/..., /shorts/..., with ?t=85 or t=1m25s)
+function parseYouTube(s) {
+  s = String(s).trim();
+  const m = s.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
+  const t = s.match(/[?&](?:t|start)=(\d+h)?(\d+m)?(\d+)s?/);
+  const start = t ? (parseInt(t[1] || 0, 10) * 3600 + parseInt(t[2] || 0, 10) * 60 + parseInt(t[3], 10)) : 0;
+  return { id: m ? m[1] : s, start };
+}
+function parseTikTok(s) {
+  const m = String(s).match(/video\/(\d+)/);
+  return m ? m[1] : String(s).trim();
+}
+
+function guideData(g) { return g[lang] || g.en || g.ru; }
+
+function renderGuide(key) {
+  const d = guideData(CONFIG.guides[key]);
+  document.getElementById("guideTitle").textContent = d.title;
+  const grid = document.getElementById("guideGrid");
+  grid.innerHTML = "";
+  (d.videos || []).forEach(v => {
+    if (v.youtube) {
+      const p = parseYouTube(v.youtube);
+      grid.appendChild(makeCard("youtube", p.id, toSeconds(v.start) || p.start, d.title, lang));
+    } else if (v.tiktok) {
+      grid.appendChild(makeCard("tiktok", parseTikTok(v.tiktok), v.start, d.title, lang));
+    }
+  });
+  const nav = document.getElementById("guideNav");
+  nav.innerHTML = "";
+  Object.keys(CONFIG.guides).forEach(k => {
+    const a = document.createElement("a");
+    a.className = "chip";
+    a.href = "#" + k;
+    a.setAttribute("aria-pressed", k === key);
+    a.textContent = guideData(CONFIG.guides[k]).title;
+    nav.appendChild(a);
+  });
+}
+
+function route(scroll) {
+  const key = decodeURIComponent(location.hash.slice(1));
+  const isGuide = Object.prototype.hasOwnProperty.call(CONFIG.guides, key);
+  document.body.classList.toggle("guide-mode", isGuide);
+  if (isGuide) renderGuide(key);
+  if (!scroll) return;
+  const target = !isGuide && key && document.getElementById(key);
+  if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", () => route(true));
+
+function renderFilters() {
+  const t = T[lang], box = document.getElementById("filters");
+  const chip = (label, group, val, cur) =>
+    `<button class="chip" type="button" data-g="${group}" data-v="${val}" aria-pressed="${cur === val}">${label}</button>`;
+  box.innerHTML =
+    chip(t.all, "plat", "all", fPlat) + chip("YouTube", "plat", "youtube", fPlat) + chip("TikTok", "plat", "tiktok", fPlat);
+}
+
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  fPlat = b.dataset.v;
+  renderFilters(); renderVideos();
+});
+
+function applyLang() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.getElementById("langBtn").textContent = lang === "ru" ? "ENG" : "RU";
+  document.getElementById("versionMeta").textContent = `${t.version} ${CONFIG.version}`;
+  renderFilters(); renderVideos(); route(false);
+}
+
+document.getElementById("langBtn").addEventListener("click", () => {
+  lang = lang === "ru" ? "en" : "ru"; save("lang", lang); applyLang();
+});
+
+document.getElementById("downloadBtn").href = CONFIG.downloadUrl;
+document.getElementById("paypalBtn").href = CONFIG.paypalUrl;
+document.getElementById("year").textContent = new Date().getFullYear();
+applyLang();
+</script>
+</body>
+</html>
