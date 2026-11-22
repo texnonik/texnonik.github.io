@@ -158,8 +158,8 @@ const CONFIG = {
   // YouTube id: the part after v=  (youtube.com/watch?v=THIS_PART)
   // TikTok id:  the number at the end (tiktok.com/@user/video/THIS_NUMBER)
   videos: [
-    { platform: "youtube", lang: "ru", id: "YOUTUBE_VIDEO_ID", title: "Установка и первый запуск" },
-    { platform: "youtube", lang: "en", id: "YOUTUBE_VIDEO_ID", title: "Installation and first run" },
+    { platform: "youtube", lang: "ru", id: "EtTbLN4DGc0", title: "Клиент TexStudio — все функции (полное видео)" },
+    { platform: "youtube", lang: "en", id: "AqXlQHOdRwA", title: "TexStudio client — all features (full video)" },
     { platform: "tiktok",  lang: "ru", id: "TIKTOK_VIDEO_ID",  title: "Быстрый совет" },
     { platform: "tiktok",  lang: "en", id: "TIKTOK_VIDEO_ID",  title: "Quick tip" }
   ],
@@ -170,31 +170,38 @@ const CONFIG = {
   //   { tiktok:  "ID or full link", start: "0:15" }   start is optional
   // A YouTube link with ?t=85 also works — the timestamp is taken from it.
   guides: {
-    button1: {   // YouTube + TikTok
-      ru: { title: "Обзор кнопки 1", videos: [
-        { youtube: "YOUTUBE_VIDEO_ID", start: "0:00" },
-        { tiktok: "https://www.tiktok.com/@jwaep.1/video/7708485141605207309?is_from_webapp=1&sender_device=pc", start: "0:15" } ] },
-      en: { title: "Button 1 review", videos: [
-        { youtube: "YOUTUBE_VIDEO_ID", start: "0:00" },
-        { tiktok: "https://www.tiktok.com/@jwaep.1/video/7708485141605207309?is_from_webapp=1&sender_device=pc", start: "0:15" } ] }
+    button1: {
+      ru: { title: "Gores карты за пару кликов", videos: [ { youtube: "dwZN4viQ8YQ" } ] },
+      en: { title: "Gores maps in a few clicks", videos: [ { youtube: "7XWLVaF-Ek4" } ] }
     },
-    button2: {   // only YouTube
-      ru: { title: "Обзор кнопки 2", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "1:30" } ] },
-      en: { title: "Button 2 review", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "1:30" } ] }
+    button2: {
+      ru: { title: "Тайлы клавиатурой и фон", videos: [ { youtube: "VPPUq6VC42I" } ] },
+      en: { title: "Keyboard tiles and backgrounds", videos: [ { youtube: "rm8PPAAHOVs" } ] }
     },
-    button3: {   // only YouTube
-      ru: { title: "Обзор кнопки 3", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "3:00" } ] },
-      en: { title: "Button 3 review", videos: [ { youtube: "YOUTUBE_VIDEO_ID", start: "3:00" } ] }
+    button3: {
+      ru: { title: "Кисть, заливка, Quad-объекты", videos: [ { youtube: "VzpyK3VBhyM" } ] },
+      en: { title: "Brush, Fill Tool, Quads", videos: [ { youtube: "bue3SPwLVMc" } ] }
     },
-    button4: {   // YouTube + TikTok
-      ru: { title: "Обзор кнопки 4", videos: [
-        { youtube: "YOUTUBE_VIDEO_ID", start: "4:30" },
-        { tiktok: "TIKTOK_VIDEO_ID" } ] },
-      en: { title: "Button 4 review", videos: [
-        { youtube: "YOUTUBE_VIDEO_ID", start: "4:30" },
-        { tiktok: "TIKTOK_VIDEO_ID" } ] }
+    button4: {
+      ru: { title: "Копирование областей", videos: [ { youtube: "LrCivRk2964" } ] },
+      en: { title: "Copying areas", videos: [ { youtube: "4N7oeC1xRUc" } ] }
+    },
+    button5: {
+      ru: { title: "Сохранение партов", videos: [ { youtube: "rLIHI1aqPGw" } ] },
+      en: { title: "Saving map parts", videos: [ { youtube: "bzT57c7Pqxk" } ] }
+    },
+    button6: {
+      ru: { title: "Генерация дизайна карты", videos: [ { youtube: "r1NOvil3XS0" } ] },
+      en: { title: "Map design generation", videos: [ { youtube: "nuu9ywZOxHw" } ] }
+    },
+    button7: {
+      ru: { title: "Свои серверы редактора", videos: [ { youtube: "ASMi36BwZj8" } ] },
+      en: { title: "Your own editor servers", videos: [ { youtube: "USK9YnkgxnU" } ] }
     }
-  }
+  },
+
+  // YouTube videos show "coming soon" until this moment (scheduled publish time), then appear by themselves.
+  releaseAt: "2026-11-23T18:00:00+02:00"
 };
 /* ======================================================== */
 
@@ -206,7 +213,7 @@ const T = {
     downloadBtn: "Download for Windows", version: "Version",
     tutTitle: "Video tutorials", tutText: "Learn step by step on YouTube and TikTok.",
     all: "All", ru: "Russian", en: "English",
-    noVideos: "No videos for this filter yet.", soon: "Video coming soon",
+    noVideos: "No videos for this filter yet.", soon: "Video coming soon", soonAt: "Video comes out",
     supportTitle: "Donate",
     supportText: "TeXstudio Client is free. If it helps you, you can support further development.",
     paypalBtn: "Donate with PayPal",
@@ -219,7 +226,7 @@ const T = {
     downloadBtn: "Скачать для Windows", version: "Версия",
     tutTitle: "Видеоуроки", tutText: "Учитесь шаг за шагом на YouTube и TikTok.",
     all: "Все", ru: "Русский", en: "English",
-    noVideos: "Пока нет видео для этого фильтра.", soon: "Видео скоро появится",
+    noVideos: "Пока нет видео для этого фильтра.", soon: "Видео скоро появится", soonAt: "Видео выйдет",
     supportTitle: "Донат",
     supportText: "TeXstudio Client бесплатный. Если он вам помогает, вы можете поддержать дальнейшую разработку.",
     paypalBtn: "Поддержать через PayPal",
@@ -234,6 +241,9 @@ let lang = load("lang") || ((navigator.language || "en").toLowerCase().startsWit
 let fPlat = "all";
 
 const isPlaceholder = id => !id || /VIDEO_ID/.test(id);
+const releaseTime = Date.parse(CONFIG.releaseAt) || 0;
+// Swap the "coming soon" cards for the real videos at release time without a reload.
+if (Date.now() < releaseTime && releaseTime - Date.now() < 2e9) setTimeout(() => applyLang(), releaseTime - Date.now() + 1000);
 
 function renderVideos() {
   const t = T[lang], box = document.getElementById("videos");
@@ -275,8 +285,10 @@ function makeCard(platform, id, start, titleText, vLang) {
   card.className = "card " + (yt ? "is-yt" : "is-tt");
   const frame = document.createElement("div");
   frame.className = "frame " + (yt ? "yt" : "tt");
-  if (isPlaceholder(id)) {
-    frame.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;color:#aaa">${t.soon}</div>`;
+  const waiting = yt && Date.now() < releaseTime;
+  if (isPlaceholder(id) || waiting) {
+    const when = waiting ? new Date(releaseTime).toLocaleString(lang, { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }) : "";
+    frame.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:12px;color:#aaa">${waiting ? t.soonAt + " " + when : t.soon}</div>`;
   } else {
     const f = document.createElement("iframe");
     f.loading = "lazy";
