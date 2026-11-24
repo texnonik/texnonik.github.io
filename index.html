@@ -149,7 +149,8 @@
 <script>
 /* ================== CONFIG — EDIT HERE ================== */
 const CONFIG = {
-  version: "2026.11.22.2312",
+  version: "2026.11.24.1941", // fallback: the page reads the current version from versionUrl
+  versionUrl: "https://raw.githubusercontent.com/texnonik/texstudio/main/texstudio_update.json",
   // Link to your installer, e.g. a GitHub Release asset:
   downloadUrl: "https://github.com/texnonik/texstudio/releases/latest/download/TexStudio-Setup.exe",
   paypalUrl: "https://www.paypal.me/texnonik",
@@ -222,7 +223,7 @@ const T = {
     navDownload: "Download", navTutorials: "Tutorials", navSupport: "Donate",
     heroTitle: "TeXstudio Client",
     heroText: "Have you already created a map in just a couple of clicks?",
-    downloadBtn: "Download for Windows", version: "2026.11.22.2312",
+    downloadBtn: "Download for Windows", version: "Version",
     tutTitle: "Video tutorials", tutText: "Learn step by step on YouTube and TikTok.",
     all: "All", ru: "Russian", en: "English",
     noVideos: "No videos for this filter yet.", soon: "Video coming soon", soonAt: "Video comes out",
@@ -235,7 +236,7 @@ const T = {
     navDownload: "Скачать", navTutorials: "Уроки", navSupport: "Донат",
     heroTitle: "TeXstudio Client",
     heroText: "А ты уже создал карту в пару кликов?",
-    downloadBtn: "Скачать для Windows", version: "2026.11.22.2312",
+    downloadBtn: "Скачать для Windows", version: "Версия",
     tutTitle: "Видеоуроки", tutText: "Учитесь шаг за шагом на YouTube и TikTok.",
     all: "Все", ru: "Русский", en: "English",
     noVideos: "Пока нет видео для этого фильтра.", soon: "Видео скоро появится", soonAt: "Видео выйдет",
@@ -406,6 +407,10 @@ document.getElementById("downloadBtn").href = CONFIG.downloadUrl;
 document.getElementById("paypalBtn").href = CONFIG.paypalUrl;
 document.getElementById("year").textContent = new Date().getFullYear();
 applyLang();
+// the same version file the client's updater reads, so the site always shows the released version
+fetch(CONFIG.versionUrl, { cache: "no-store" }).then(r => r.json()).then(j => {
+  if (j && j.version) { CONFIG.version = String(j.version); applyLang(); }
+}).catch(() => {});
 </script>
 </body>
 </html>
