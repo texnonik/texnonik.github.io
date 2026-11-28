@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TeXstudio Client</title>
-<meta name="description" content="Download TeXstudio client, watch tutorials (Russian / English) and support the project.">
+<title>TexStudio</title>
+<meta name="description" content="Download TexStudio, watch tutorials (Russian / English) and support the project.">
 <style>
   /* =========================================================
      EDIT ONLY THE CONFIG IN THE <script> AT THE BOTTOM.
@@ -43,6 +43,7 @@
   .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px;
     border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 17px; border: 0; }
   .btn-primary { background: var(--accent); color: var(--accent-text); }
+  .btn-zip { background: var(--surface); color: var(--text); border: 1px solid var(--border); margin-left: 8px; }
   .btn-paypal { background: var(--paypal); color: var(--paypal-text); }
   .btn:hover { filter: brightness(1.06); }
   .meta { margin-top: 14px; color: var(--muted); font-size: 14px; }
@@ -96,7 +97,7 @@
 <body>
 <header>
   <div class="wrap bar">
-    <a class="logo" href="#">TeX<span>studio</span></a>
+    <a class="logo" href="#">Tex<span>Studio</span></a>
     <nav>
       <a class="link" href="#download" data-i18n="navDownload"></a>
       <a class="link" href="#tutorials" data-i18n="navTutorials"></a>
@@ -121,6 +122,7 @@
     <h1 data-i18n="heroTitle"></h1>
     <p data-i18n="heroText"></p>
     <a class="btn btn-primary" id="downloadBtn" href="#">⬇ <span data-i18n="downloadBtn"></span></a>
+    <a class="btn btn-zip" id="zipBtn" href="#">⬇ <span data-i18n="zipBtn"></span></a>
     <div class="meta" id="versionMeta"></div>
   </div>
 
@@ -143,7 +145,7 @@
 </main>
 
 <footer>
-  <div class="wrap">© <span id="year"></span> TeXstudio Client</div>
+  <div class="wrap">© <span id="year"></span> TexStudio</div>
 </footer>
 
 <script>
@@ -153,6 +155,7 @@ const CONFIG = {
   versionUrl: "https://raw.githubusercontent.com/texnonik/texstudio/main/texstudio_update.json",
   // Link to your installer, e.g. a GitHub Release asset:
   downloadUrl: "https://github.com/texnonik/texstudio/releases/latest/download/TexStudio-Setup.exe",
+  zipUrl: "https://github.com/texnonik/texstudio/releases/latest/download/TexStudio.zip",
   paypalUrl: "https://www.paypal.me/texnonik",
 
   // platform: "youtube" or "tiktok"; lang: "ru" or "en"
@@ -221,27 +224,27 @@ const CONFIG = {
 const T = {
   en: {
     navDownload: "Download", navTutorials: "Tutorials", navSupport: "Donate",
-    heroTitle: "TeXstudio Client",
+    heroTitle: "TexStudio",
     heroText: "Have you already created a map in just a couple of clicks?",
-    downloadBtn: "Download for Windows", version: "Version",
+    downloadBtn: "Download for Windows", zipBtn: "Download ZIP (no installer)", version: "Version",
     tutTitle: "Video tutorials", tutText: "Learn step by step on YouTube and TikTok.",
     all: "All", ru: "Russian", en: "English",
     noVideos: "No videos for this filter yet.", soon: "Video coming soon", soonAt: "Video comes out",
     supportTitle: "Donate",
-    supportText: "TeXstudio Client is free. If it helps you, you can support further development.",
+    supportText: "TexStudio is free. If it helps you, you can support further development.",
     paypalBtn: "Donate with PayPal",
     back: "← Back to home", otherGuides: "Other button reviews"
   },
   ru: {
     navDownload: "Скачать", navTutorials: "Уроки", navSupport: "Донат",
-    heroTitle: "TeXstudio Client",
+    heroTitle: "TexStudio",
     heroText: "А ты уже создал карту в пару кликов?",
-    downloadBtn: "Скачать для Windows", version: "Версия",
+    downloadBtn: "Скачать для Windows", zipBtn: "Скачать ZIP (без установки)", version: "Версия",
     tutTitle: "Видеоуроки", tutText: "Учитесь шаг за шагом на YouTube и TikTok.",
     all: "Все", ru: "Русский", en: "English",
     noVideos: "Пока нет видео для этого фильтра.", soon: "Видео скоро появится", soonAt: "Видео выйдет",
     supportTitle: "Донат",
-    supportText: "TeXstudio Client бесплатный. Если он вам помогает, вы можете поддержать дальнейшую разработку.",
+    supportText: "TexStudio бесплатный. Если он вам помогает, вы можете поддержать дальнейшую разработку.",
     paypalBtn: "Поддержать через PayPal",
     back: "← На главную", otherGuides: "Другие обзоры кнопок"
   }
@@ -404,6 +407,7 @@ document.getElementById("langBtn").addEventListener("click", () => {
 });
 
 document.getElementById("downloadBtn").href = CONFIG.downloadUrl;
+document.getElementById("zipBtn").href = CONFIG.zipUrl;
 document.getElementById("paypalBtn").href = CONFIG.paypalUrl;
 document.getElementById("year").textContent = new Date().getFullYear();
 applyLang();
