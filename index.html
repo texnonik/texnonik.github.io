@@ -157,7 +157,8 @@
 <script>
 /* ================== CONFIG — EDIT HERE ================== */
 const CONFIG = {
-  version: "2026.11.24.1941", // fallback: the page reads the current version from versionUrl
+  version: "", // filled from versionUrl when the page loads
+  fallbackVersion: "2026.11.28.1630", // shown only if GitHub can't be reached
   versionUrl: "https://raw.githubusercontent.com/texnonik/texstudio/main/texstudio_update.json",
   // Link to your installer, e.g. a GitHub Release asset:
   downloadUrl: "https://github.com/texnonik/texstudio/releases/latest/download/TexStudio-Setup.exe",
@@ -427,7 +428,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t[el.dataset.i18n]; });
   document.getElementById("langBtn").textContent = lang === "ru" ? "ENG" : "RU";
-  document.getElementById("versionMeta").textContent = `${t.version} ${CONFIG.version}`;
+  document.getElementById("versionMeta").textContent = CONFIG.version ? `${t.version} ${CONFIG.version}` : " ";
   renderFilters(); renderVideos(); route(false);
 }
 
@@ -441,9 +442,14 @@ document.getElementById("paypalBtn").href = CONFIG.paypalUrl;
 document.getElementById("year").textContent = new Date().getFullYear();
 applyLang();
 // the same version file the client's updater reads, so the site always shows the released version
-fetch(CONFIG.versionUrl, { cache: "no-store" }).then(r => r.json()).then(j => {
-  if (j && j.version) { CONFIG.version = String(j.version); applyLang(); }
-}).catch(() => {});
+// (?t=... skips GitHub's 5-minute cache; if that fails, the latest release's tag; the fallback only after both fail)
+const showVersion = v => { CONFIG.version = String(v); applyLang(); };
+fetch(CONFIG.versionUrl + "?t=" + Date.now(), { cache: "no-store" }).then(r => r.json()).then(j => {
+  if (!j || !j.version) throw 0;
+  showVersion(j.version);
+}).catch(() => fetch("https://api.github.com/repos/texnonik/texstudio/releases/latest").then(r => r.json())
+  .then(j => { if (!j.tag_name) throw 0; showVersion(j.tag_name.replace(/^v/, "")); }))
+  .catch(() => showVersion(CONFIG.fallbackVersion));
 </script>
 </body>
 </html>
