@@ -66,6 +66,12 @@
   .frame.yt { aspect-ratio: 16 / 9; }
   .frame.tt { aspect-ratio: 9 / 16; max-height: 560px; margin: 0 auto; }
   .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .play { position: absolute; inset: 0; display: grid; place-items: center; }
+  .play img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .play img:not([src]) { display: none; }
+  .play .pl { position: relative; width: 64px; height: 64px; border-radius: 50%; background: rgba(0,0,0,.6);
+    color: #fff; font-size: 26px; display: grid; place-items: center; transition: transform .15s; }
+  .play:hover .pl { transform: scale(1.1); background: #e00; }
   .card .info { padding: 12px 14px; }
   .card .title { font-weight: 600; margin: 0 0 6px; }
   .tags { display: flex; gap: 6px; }
@@ -177,7 +183,23 @@ const CONFIG = {
     { platform: "youtube", lang: "ru", id: "r1NOvil3XS0", title: "Генерация дизайна карты" },
     { platform: "youtube", lang: "en", id: "nuu9ywZOxHw", title: "Map design generation" },
     { platform: "youtube", lang: "ru", id: "ASMi36BwZj8", title: "Свои серверы редактора" },
-    { platform: "youtube", lang: "en", id: "USK9YnkgxnU", title: "Your own editor servers" }
+    { platform: "youtube", lang: "en", id: "USK9YnkgxnU", title: "Your own editor servers" },
+    { platform: "tiktok", lang: "ru", id: "7711400049594436897", title: "Клиент TexStudio — все функции (полное видео)" },
+    { platform: "tiktok", lang: "ru", id: "7711393125326916897", title: "Карта в пару кликов" },
+    { platform: "tiktok", lang: "ru", id: "7711393318139088161", title: "Свои серверы редактора" },
+    { platform: "tiktok", lang: "ru", id: "7711393786227674401", title: "Сохранение партов" },
+    { platform: "tiktok", lang: "ru", id: "7711394191686896928", title: "Кисть, заливка, Quad-объекты" },
+    { platform: "tiktok", lang: "ru", id: "7711394582172323104", title: "Тайлы клавиатурой и фон" },
+    { platform: "tiktok", lang: "ru", id: "7711394790029413664", title: "Gores карты за пару кликов" },
+    { platform: "tiktok", lang: "ru", id: "7711394984410254624", title: "Копирование областей" },
+    { platform: "tiktok", lang: "en", id: "7711400556685790496", title: "TexStudio client — all features (full video)" },
+    { platform: "tiktok", lang: "en", id: "7711395374677757216", title: "A map in a few clicks" },
+    { platform: "tiktok", lang: "en", id: "7711395665884040480", title: "Saving map parts" },
+    { platform: "tiktok", lang: "en", id: "7711395856288599328", title: "Brush, Fill Tool, Quads" },
+    { platform: "tiktok", lang: "en", id: "7711395970071760160", title: "Map design generation" },
+    { platform: "tiktok", lang: "en", id: "7711396107712023841", title: "Keyboard tiles and backgrounds" },
+    { platform: "tiktok", lang: "en", id: "7711396307977506080", title: "Gores maps in a few clicks" },
+    { platform: "tiktok", lang: "en", id: "7711396480833113377", title: "Copying areas" }
   ],
 
   // Button review pages. Link: https://YOUR_SITE/#button1  (the key is the link name)
@@ -306,15 +328,23 @@ function makeCard(platform, id, start, titleText, vLang) {
     const when = waiting ? new Date(releaseTime).toLocaleString(lang, { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" }) : "";
     frame.innerHTML = `<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:12px;color:#aaa">${waiting ? t.soonAt + " " + when : t.soon}</div>`;
   } else {
-    const f = document.createElement("iframe");
-    f.loading = "lazy";
-    f.allowFullscreen = true;
-    f.allow = "encrypted-media; picture-in-picture";
+    // a click opens the video on YouTube / TikTok in a new tab
     const sec = toSeconds(start);
-    f.src = yt ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}${sec ? "?start=" + sec : ""}`
-               : `https://www.tiktok.com/player/v1/${encodeURIComponent(id)}?rel=0`;
-    frame.appendChild(f);
-    if (!yt && sec) tiktokSeeks.set(f, { sec, seeked: 0 });
+    const a = document.createElement("a");
+    a.className = "play";
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.href = yt ? `https://www.youtube.com/watch?v=${encodeURIComponent(id)}${sec ? "&t=" + sec + "s" : ""}`
+                : `https://www.tiktok.com/@texnonik/video/${encodeURIComponent(id)}`;
+    a.innerHTML = `<span class="pl">▶</span>`;
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.alt = "";
+    if (yt) img.src = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+    else fetch("https://www.tiktok.com/oembed?url=" + encodeURIComponent(a.href)).then(r => r.json())
+      .then(j => { if (j.thumbnail_url) img.src = j.thumbnail_url; }).catch(() => {});
+    a.prepend(img);
+    frame.appendChild(a);
   }
   const info = document.createElement("div");
   info.className = "info";
