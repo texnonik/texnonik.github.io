@@ -341,8 +341,7 @@ function makeCard(platform, id, start, titleText, vLang) {
     img.loading = "lazy";
     img.alt = "";
     if (yt) img.src = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
-    else fetch("https://www.tiktok.com/oembed?url=" + encodeURIComponent(a.href)).then(r => r.json())
-      .then(j => { if (j.thumbnail_url) img.src = j.thumbnail_url; }).catch(() => {});
+    else { img.onerror = () => img.removeAttribute("src"); img.src = `tt/${encodeURIComponent(id)}.jpg`; } // covers saved in the site's tt folder
     a.prepend(img);
     frame.appendChild(a);
   }
